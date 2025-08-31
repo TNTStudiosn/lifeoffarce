@@ -28,6 +28,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
+import com.TNTStudios.lifeoffarce.item.ModCreativeModeTabs;
+import com.TNTStudios.lifeoffarce.item.ModItems;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Lifeoffarce.MODID)
@@ -60,6 +62,10 @@ public class Lifeoffarce {
     public Lifeoffarce() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        // Le digo a mi mod que registre las clases de Items y Creative Tabs.
+        ModItems.register(modEventBus);
+        ModCreativeModeTabs.register(modEventBus);
+
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
@@ -82,8 +88,8 @@ public class Lifeoffarce {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         // Some common setup code
-        LOGGER.info("HELLO FROM COMMON SETUP");
         LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
+        LOGGER.info("Life of Farce Mod inicializado.");
 
         if (Config.logDirtBlock) LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
 
