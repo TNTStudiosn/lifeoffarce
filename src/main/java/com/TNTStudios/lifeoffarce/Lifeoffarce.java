@@ -30,6 +30,9 @@ import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 import com.TNTStudios.lifeoffarce.item.ModCreativeModeTabs;
 import com.TNTStudios.lifeoffarce.item.ModItems;
+import com.TNTStudios.lifeoffarce.entity.ModEntities;
+import com.TNTStudios.lifeoffarce.entity.custom.ElGiganteEntity;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Lifeoffarce.MODID)
@@ -62,9 +65,15 @@ public class Lifeoffarce {
     public Lifeoffarce() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        // Añado el listener para los atributos de las entidades.
+        modEventBus.addListener(this::entityAttributeEvent);
+
         // Le digo a mi mod que registre las clases de Items y Creative Tabs.
         ModItems.register(modEventBus);
         ModCreativeModeTabs.register(modEventBus);
+
+        // Añado mi nuevo registrador de entidades.
+        ModEntities.register(modEventBus); // <-- AÑADIR ESTA LÍNEA
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
@@ -98,6 +107,10 @@ public class Lifeoffarce {
         Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
     }
 
+    private void entityAttributeEvent(EntityAttributeCreationEvent event) {
+        event.put(ModEntities.EL_GIGANTE.get(), ElGiganteEntity.createAttributes().build());
+    }
+
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) event.accept(EXAMPLE_BLOCK_ITEM);
@@ -116,7 +129,9 @@ public class Lifeoffarce {
 
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            // Some client setup code
+            // Aquí le decimos a Minecraft cómo renderizar nuestra entidad.
+            net.minecraft.client.renderer.entity.EntityRenderers.register(ModEntities.EL_GIGANTE.get(), com.TNTStudios.lifeoffarce.entity.client.ElGiganteRenderer::new); // <-- AÑADIR ESTA LÍNEA
+
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
         }
