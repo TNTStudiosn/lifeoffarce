@@ -605,7 +605,7 @@
 					"pivot": [-14, 38, -1]
 				},
 				{
-					"name": "Brazo derecho arriba",
+					"name": "brazoderechoarriba",
 					"parent": "right_arm",
 					"pivot": [-15.44443, 35.15487, -1],
 					"cubes": [
@@ -640,8 +640,8 @@
 					]
 				},
 				{
-					"name": "Brazo derecho abajo",
-					"parent": "Brazo derecho arriba",
+					"name": "brazoderechoabajo",
+					"parent": "brazoderechoarriba",
 					"pivot": [-21.98829, 29.24971, -1],
 					"cubes": [
 						{
@@ -661,8 +661,8 @@
 					]
 				},
 				{
-					"name": "Mano derecha",
-					"parent": "Brazo derecho abajo",
+					"name": "manoderecha",
+					"parent": "brazoderechoabajo",
 					"pivot": [-24.30978, 21.65307, -1],
 					"cubes": [
 						{
@@ -687,7 +687,7 @@
 					"pivot": [13, 37, 0]
 				},
 				{
-					"name": "Brazo izquierdo arriba",
+					"name": "brazoizquierdoarriba",
 					"parent": "left_arm",
 					"pivot": [13.23725, 38.30286, 0],
 					"cubes": [
@@ -722,8 +722,8 @@
 					]
 				},
 				{
-					"name": "Brazo izquierdo abajo",
-					"parent": "Brazo izquierdo arriba",
+					"name": "brazoizquierdoabajo",
+					"parent": "brazoizquierdoarriba",
 					"pivot": [20.63689, 33.44278, 0],
 					"cubes": [
 						{
@@ -743,8 +743,8 @@
 					]
 				},
 				{
-					"name": "Mano izquierdo",
-					"parent": "Brazo izquierdo abajo",
+					"name": "manoizquierda",
+					"parent": "brazoizquierdoabajo",
 					"pivot": [22.44744, 27.5644, -0.53782],
 					"cubes": [
 						{
@@ -879,7 +879,7 @@
 					"pivot": [3, 17, -1.2]
 				},
 				{
-					"name": "Pierna izquierda arriba",
+					"name": "piernaizquierdaarriba",
 					"parent": "right_leg",
 					"pivot": [4.40084, 17.07108, -1.47087],
 					"cubes": [
@@ -942,8 +942,8 @@
 					]
 				},
 				{
-					"name": "Pierna izquierda abajo",
-					"parent": "Pierna izquierda arriba",
+					"name": "piernaizquierdaabajo",
+					"parent": "piernaizquierdaarriba",
 					"pivot": [5.30378, 7.90153, -0.66417],
 					"cubes": [
 						{
@@ -977,8 +977,8 @@
 					]
 				},
 				{
-					"name": "Pie izquierdo",
-					"parent": "Pierna izquierda abajo",
+					"name": "pieizquierdo",
+					"parent": "piernaizquierdaabajo",
 					"pivot": [5.83895, 5.33806, 0.04964],
 					"rotation": [0, -20, 0],
 					"cubes": [
@@ -1152,7 +1152,7 @@
 					"pivot": [-7, 17, -2.2]
 				},
 				{
-					"name": "Pierna derecha Arriba",
+					"name": "piernaderechaarrbia",
 					"parent": "left_leg",
 					"pivot": [-7.42729, 17.3312, -2.56563],
 					"cubes": [
@@ -1187,8 +1187,8 @@
 					]
 				},
 				{
-					"name": "Pierna derecha abajo",
-					"parent": "Pierna derecha Arriba",
+					"name": "pierbaderechaabajo",
+					"parent": "piernaderechaarrbia",
 					"pivot": [-8.11759, 9.50255, -2.8138],
 					"cubes": [
 						{
@@ -1208,8 +1208,8 @@
 					]
 				},
 				{
-					"name": "Pie derecho",
-					"parent": "Pierna derecha abajo",
+					"name": "piederecho",
+					"parent": "pierbaderechaabajo",
 					"pivot": [-10.36381, 4.33806, -2.34412],
 					"rotation": [0, 20, 0],
 					"cubes": [

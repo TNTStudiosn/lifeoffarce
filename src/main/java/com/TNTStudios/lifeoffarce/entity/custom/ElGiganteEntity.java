@@ -1,8 +1,5 @@
 package com.TNTStudios.lifeoffarce.entity.custom;
 
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -64,20 +61,32 @@ public class ElGiganteEntity extends Monster implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        // Añado un controlador de animación.
-        controllerRegistrar.add(new AnimationController<>(this, "controller", 0, this::predicate));
+        // Añado un único controlador que gestionará todas las animaciones (atacar, caminar, reposo).
+        // Le doy una duración de transición de 3 ticks (0.15s) para suavizar los cambios entre animaciones.
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 3, this::predicate));
     }
 
-    // Este método decide qué animación reproducir.
-    private <T extends GeoEntity> PlayState predicate(AnimationState<T> tAnimationState) {
-        // Si la entidad se está moviendo, reproduzco la animación de caminar.
-        if(tAnimationState.isMoving()) {
-            tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.elgigante.walk", Animation.LoopType.LOOP));
+    // Este método decide qué animación reproducir, dando prioridad al ataque.
+    private <T extends GeoEntity> PlayState predicate(AnimationState<T> state) {
+        // Prioridad 1: Atacar.
+        // Si la entidad está atacando (`swinging`), reproduzco la animación de ataque.
+        // `getController().setAnimation` reinicia la animación si ya se estaba reproduciendo otra.
+        if (this.swinging) {
+            state.getController().setAnimation(RawAnimation.begin().then("attack", Animation.LoopType.PLAY_ONCE));
             return PlayState.CONTINUE;
         }
 
-        // Si no se mueve, reproduzco la animación de estar quieto.
-        tAnimationState.getController().setAnimation(RawAnimation.begin().then("animation.elgigante.idle", Animation.LoopType.LOOP));
+        // Prioridad 2: Caminar.
+        // Si no está atacando pero se está moviendo, reproduzco la animación de caminar.
+        // El `LoopType.LOOP` hace que se repita mientras la condición sea verdadera.
+        if (state.isMoving()) {
+            state.getController().setAnimation(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
+            return PlayState.CONTINUE;
+        }
+
+        // Prioridad 3: Reposo (Idle).
+        // Si no está haciendo nada de lo anterior, reproduzco la animación de reposo.
+        state.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;
     }
 

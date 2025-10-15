@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"animation.elgigante.idle": {
+		"idle": {
 			"loop": true,
 			"animation_length": 2,
 			"bones": {
@@ -95,7 +95,7 @@
 						}
 					}
 				},
-				"Brazo derecho abajo": {
+				"brazoderechoabajo": {
 					"rotation": {
 						"0.0": {
 							"post": {
@@ -129,7 +129,7 @@
 						}
 					}
 				},
-				"Mano derecha": {
+				"manoderecha": {
 					"rotation": {
 						"0.0": {
 							"post": {
@@ -197,7 +197,7 @@
 						}
 					}
 				},
-				"Brazo izquierdo abajo": {
+				"brazoizquierdoabajo": {
 					"rotation": {
 						"0.0": {
 							"post": {
@@ -231,7 +231,7 @@
 						}
 					}
 				},
-				"Mano izquierdo": {
+				"manoizquierda": {
 					"rotation": {
 						"0.0": {
 							"post": {
@@ -267,7 +267,7 @@
 				}
 			}
 		},
-		"animation.elgigante.walk": {
+		"walk": {
 			"loop": true,
 			"animation_length": 1,
 			"bones": {
@@ -361,7 +361,7 @@
 						}
 					}
 				},
-				"Brazo derecho abajo": {
+				"brazoderechoabajo": {
 					"rotation": {
 						"0.0": {
 							"post": {
@@ -383,7 +383,7 @@
 						}
 					}
 				},
-				"Mano derecha": {
+				"manoderecha": {
 					"rotation": {
 						"0.0": {
 							"post": {
@@ -405,7 +405,7 @@
 						}
 					}
 				},
-				"Brazo izquierdo arriba": {
+				"brazoizquierdoarriba": {
 					"rotation": {
 						"0.0": {
 							"post": {
@@ -427,7 +427,7 @@
 						}
 					}
 				},
-				"Brazo izquierdo abajo": {
+				"brazoizquierdoabajo": {
 					"rotation": {
 						"0.0": {
 							"post": {
@@ -461,7 +461,7 @@
 						}
 					}
 				},
-				"Mano izquierdo": {
+				"manoizquierda": {
 					"rotation": {
 						"0.0": {
 							"post": {
@@ -537,7 +537,7 @@
 						}
 					}
 				},
-				"Pierna izquierda abajo": {
+				"piernaizquierdaabajo": {
 					"rotation": {
 						"0.0": {
 							"post": {
@@ -571,7 +571,7 @@
 						}
 					}
 				},
-				"Pie izquierdo": {
+				"pieizquierdo": {
 					"rotation": {
 						"0.0": {
 							"post": {
@@ -647,7 +647,7 @@
 						}
 					}
 				},
-				"Pierna derecha abajo": {
+				"pierbaderechaabajo": {
 					"rotation": {
 						"0.0": {
 							"post": {
@@ -681,7 +681,7 @@
 						}
 					}
 				},
-				"Pie derecho": {
+				"piederecho": {
 					"rotation": {
 						"0.0": {
 							"post": {
@@ -714,10 +714,15 @@
 							"lerp_mode": "catmullrom"
 						}
 					}
+				},
+				"left_arm": {
+					"scale": {
+						"vector": [1, 1, 1]
+					}
 				}
 			}
 		},
-		"animation.elgigante.attack": {
+		"attack": {
 			"animation_length": 1.5,
 			"bones": {
 				"body_base": {
@@ -852,7 +857,7 @@
 						}
 					}
 				},
-				"Brazo derecho abajo": {
+				"brazoderechoabajo": {
 					"rotation": {
 						"0.0": {
 							"post": {
@@ -904,7 +909,7 @@
 						}
 					}
 				},
-				"Mano derecha": {
+				"manoderecha": {
 					"rotation": {
 						"0.0": {
 							"post": {
@@ -990,7 +995,7 @@
 						}
 					}
 				},
-				"Brazo izquierdo abajo": {
+				"brazoizquierdoabajo": {
 					"rotation": {
 						"0.0": {
 							"post": {
@@ -1042,7 +1047,7 @@
 						}
 					}
 				},
-				"Mano izquierdo": {
+				"manoizquierda": {
 					"rotation": {
 						"0.0": {
 							"post": {
