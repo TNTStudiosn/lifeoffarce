@@ -29,6 +29,7 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.MEDALLA_DEFENSAPERSONALYMEDITACION.get());
                         pOutput.accept(ModItems.MEDALLA_FILOSOFIA.get());
                         pOutput.accept(ModItems.MEDALLA_MEDICINA.get());
+                        pOutput.accept(ModItems.TICKET.get());
                     })
                     .build());
 

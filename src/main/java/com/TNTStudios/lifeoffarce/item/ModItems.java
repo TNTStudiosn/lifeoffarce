@@ -26,6 +26,8 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> MEDALLA_MEDICINA = ITEMS.register("medalla_medicina",
             () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> TICKET = ITEMS.register("ticket",
+            () -> new Item(new Item.Properties()));
 
     // Método para que la clase principal pueda registrar todo lo de aquí.
     public static void register(IEventBus eventBus) {
