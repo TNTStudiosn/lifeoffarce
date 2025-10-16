@@ -25,6 +25,23 @@ public class ElGiganteEntity extends Monster implements GeoEntity {
         super(pEntityType, pLevel);
     }
 
+    // =================================================================================
+    // CORRECCIÓN CLAVE
+    // =================================================================================
+    // He creado este método estático para definir los atributos base de la entidad.
+    // Este es el enfoque más seguro y recomendado por Forge.
+    // Garantiza que, sin importar qué, mi entidad siempre tendrá atributos válidos al registrarse.
+    // Los valores que pongo aquí son los mismos que tenía en la config como 'por defecto'.
+    public static AttributeSupplier.Builder createAttributes() {
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, 150.0)
+                .add(Attributes.ATTACK_DAMAGE, 15.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.25)
+                .add(Attributes.FOLLOW_RANGE, 35.0)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5); // Es una buena práctica añadir esto.
+    }
+
+
     // El resto de la clase permanece igual...
     @Override
     protected void registerGoals() {
