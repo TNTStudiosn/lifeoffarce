@@ -18,20 +18,21 @@ public class ModEvents {
         // Para cada una de mis entidades, llamo a este evento para asignarle sus atributos base.
         // Estos son los valores que tendrán al ser creadas, antes de cualquier modificador (pociones, equipo, etc.).
 
-        // Obtengo la configuración específica para "El Gigante".
+        // ¡MODIFICADO! Obtengo los stats ya cargados y procesados para "El Gigante".
         ResourceLocation elGiganteId = new ResourceLocation(Lifeoffarce.MOD_ID, "el_gigante");
-        EntityStatsConfig.EntityConfig elGiganteConfig = EntityStatsConfig.getConfig(elGiganteId);
+        EntityStatsConfig.LoadedStats elGiganteStats = EntityStatsConfig.getStats(elGiganteId);
 
-        // Verifico que la configuración no sea nula para evitar errores.
-        if (elGiganteConfig != null) {
+        // Verifico que los stats no sean nulos para evitar errores.
+        if (elGiganteStats != null) {
             event.put(ModEntities.EL_GIGANTE.get(),
                     Monster.createMonsterAttributes()
-                            // En lugar de valores fijos, ahora uso los valores leídos desde el archivo de configuración.
-                            // El .get() me da el valor actual, ya sea el por defecto o el modificado por el usuario.
-                            .add(Attributes.MAX_HEALTH, elGiganteConfig.maxHealth.get())
-                            .add(Attributes.ATTACK_DAMAGE, elGiganteConfig.attackDamage.get())
-                            .add(Attributes.MOVEMENT_SPEED, elGiganteConfig.movementSpeed.get())
-                            .add(Attributes.FOLLOW_RANGE, elGiganteConfig.followRange.get())
+                            // ¡CORREGIDO! Ahora uso los valores del objeto 'LoadedStats'.
+                            // Estos valores ya fueron leídos del archivo de configuración de forma segura.
+                            // Ya no se llama a .get() aquí, eliminando la causa del crash.
+                            .add(Attributes.MAX_HEALTH, elGiganteStats.maxHealth)
+                            .add(Attributes.ATTACK_DAMAGE, elGiganteStats.attackDamage)
+                            .add(Attributes.MOVEMENT_SPEED, elGiganteStats.movementSpeed)
+                            .add(Attributes.FOLLOW_RANGE, elGiganteStats.followRange)
                             // También es una buena práctica añadir resistencia al retroceso (knockback).
                             .add(Attributes.KNOCKBACK_RESISTANCE, 0.5)
                             .build());
