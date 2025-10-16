@@ -33,6 +33,8 @@ import com.TNTStudios.lifeoffarce.item.ModItems;
 import com.TNTStudios.lifeoffarce.entity.ModEntities;
 import com.TNTStudios.lifeoffarce.entity.custom.ElGiganteEntity;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import com.TNTStudios.lifeoffarce.entity.config.EntityStatManager; // <-- AÑADIR
+import net.minecraftforge.event.AddReloadListenerEvent; // <-- AÑADIR
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Lifeoffarce.MODID)
@@ -42,6 +44,8 @@ public class Lifeoffarce {
     public static final String MODID = "lifeoffarce";
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
+    // Aquí creo la instancia única de mi gestor de estadísticas.
+    public static final EntityStatManager ENTITY_STAT_MANAGER = new EntityStatManager(); // <-- AÑADIR
     // Create a Deferred Register to hold Blocks which will all be registered under the "lifeoffarce" namespace
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
     // Create a Deferred Register to hold Items which will all be registered under the "lifeoffarce" namespace
@@ -65,33 +69,21 @@ public class Lifeoffarce {
     public Lifeoffarce() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        // Añado el listener para los atributos de las entidades.
         modEventBus.addListener(this::entityAttributeEvent);
-
-        // Le digo a mi mod que registre las clases de Items y Creative Tabs.
         ModItems.register(modEventBus);
         ModCreativeModeTabs.register(modEventBus);
-
-        // Añado mi nuevo registrador de entidades.
-        ModEntities.register(modEventBus); // <-- AÑADIR ESTA LÍNEA
-
-        // Register the commonSetup method for modloading
+        ModEntities.register(modEventBus);
         modEventBus.addListener(this::commonSetup);
-
-        // Register the Deferred Register to the mod event bus so blocks get registered
         BLOCKS.register(modEventBus);
-        // Register the Deferred Register to the mod event bus so items get registered
         ITEMS.register(modEventBus);
-        // Register the Deferred Register to the mod event bus so tabs get registered
         CREATIVE_MODE_TABS.register(modEventBus);
 
-        // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
-        // Register the item to a creative tab
-        modEventBus.addListener(this::addCreative);
+        // Añado un listener para el evento de recarga de recursos (/reload).
+        MinecraftForge.EVENT_BUS.addListener(this::onAddReloadListener); // <-- AÑADIR
 
-        // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
+        modEventBus.addListener(this::addCreative);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
@@ -105,6 +97,16 @@ public class Lifeoffarce {
         LOGGER.info(Config.magicNumberIntroduction + Config.magicNumber);
 
         Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
+    }
+
+
+    private void onAddReloadListener(AddReloadListenerEvent event) { // <-- AÑADIR MÉTODO
+        // Le digo al juego: "Cuando recargues recursos, también ejecuta mi método 'loadStats'".
+        event.addListener((preparationBarrier, resourceManager, profiler, executor) -> {
+            return preparationBarrier.wait(null).thenRunAsync(() -> {
+                ENTITY_STAT_MANAGER.loadStats(resourceManager);
+            }, executor);
+        });
     }
 
     private void entityAttributeEvent(EntityAttributeCreationEvent event) {

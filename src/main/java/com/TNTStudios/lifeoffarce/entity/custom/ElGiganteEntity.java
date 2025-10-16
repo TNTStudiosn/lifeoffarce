@@ -1,5 +1,7 @@
 package com.TNTStudios.lifeoffarce.entity.custom;
 
+import com.TNTStudios.lifeoffarce.Lifeoffarce; // Asegúrate que esta importación exista
+import com.TNTStudios.lifeoffarce.entity.config.EntityStats;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -14,38 +16,49 @@ import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInst
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 
+import java.util.Optional;
+
 public class ElGiganteEntity extends Monster implements GeoEntity {
-    // Cache para las animaciones, optimiza el rendimiento.
     private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
     public ElGiganteEntity(EntityType<? extends Monster> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
-    // Aquí defino los atributos base de la entidad.
+    // Aquí está la magia. Ahora los atributos se leen desde el gestor de estadísticas.
     public static AttributeSupplier.Builder createAttributes() {
+        // Primero, obtengo las estadísticas para este tipo de entidad.
+        Optional<EntityStats> statsOptional = Lifeoffarce.ENTITY_STAT_MANAGER.getStats(com.TNTStudios.lifeoffarce.entity.ModEntities.EL_GIGANTE.get());
+
+        // Si encuentro un JSON para la entidad, uso esos valores.
+        if (statsOptional.isPresent()) {
+            EntityStats stats = statsOptional.get();
+            return Monster.createMonsterAttributes()
+                    .add(Attributes.MAX_HEALTH, stats.getMaxHealth())
+                    .add(Attributes.ATTACK_DAMAGE, stats.getAttackDamage())
+                    .add(Attributes.MOVEMENT_SPEED, stats.getMovementSpeed())
+                    .add(Attributes.FOLLOW_RANGE, stats.getFollowRange());
+        }
+
+        // Si no, uso valores por defecto para evitar que el juego crashee.
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 20.0D)
                 .add(Attributes.ATTACK_DAMAGE, 8.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.20D) // Un poco más lento que un zombie (0.23D)
+                .add(Attributes.MOVEMENT_SPEED, 0.20D)
                 .add(Attributes.FOLLOW_RANGE, 35.0D);
     }
 
-    // Aquí registro la IA de la entidad.
+    // El resto de la clase permanece igual...
     @Override
     protected void registerGoals() {
-        // Le doy prioridades a las acciones que debe tomar.
-        this.goalSelector.addGoal(0, new FloatGoal(this)); // Flotar si cae al agua.
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0D, false)); // Atacar cuerpo a cuerpo.
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 0.8D)); // Caminar evitando el agua.
-        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F)); // Mirar al jugador cercano.
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this)); // Mirar a su alrededor.
-
-        // Defino a quién debe atacar.
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0D, false));
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 0.8D));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
-    // Lógica para quemarse con el sol, como los zombies.
     @Override
     public void aiStep() {
         if (this.isAlive() && this.level().isDay() && !this.level().isClientSide) {
@@ -57,35 +70,20 @@ public class ElGiganteEntity extends Monster implements GeoEntity {
         super.aiStep();
     }
 
-    // --- ANIMACIONES CON GECKOLIB ---
-
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        // Añado un único controlador que gestionará todas las animaciones (atacar, caminar, reposo).
-        // Le doy una duración de transición de 3 ticks (0.15s) para suavizar los cambios entre animaciones.
         controllerRegistrar.add(new AnimationController<>(this, "controller", 3, this::predicate));
     }
 
-    // Este método decide qué animación reproducir, dando prioridad al ataque.
     private <T extends GeoEntity> PlayState predicate(AnimationState<T> state) {
-        // Prioridad 1: Atacar.
-        // Si la entidad está atacando (`swinging`), reproduzco la animación de ataque.
-        // `getController().setAnimation` reinicia la animación si ya se estaba reproduciendo otra.
         if (this.swinging) {
             state.getController().setAnimation(RawAnimation.begin().then("attack", Animation.LoopType.PLAY_ONCE));
             return PlayState.CONTINUE;
         }
-
-        // Prioridad 2: Caminar.
-        // Si no está atacando pero se está moviendo, reproduzco la animación de caminar.
-        // El `LoopType.LOOP` hace que se repita mientras la condición sea verdadera.
         if (state.isMoving()) {
             state.getController().setAnimation(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
             return PlayState.CONTINUE;
         }
-
-        // Prioridad 3: Reposo (Idle).
-        // Si no está haciendo nada de lo anterior, reproduzco la animación de reposo.
         state.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;
     }

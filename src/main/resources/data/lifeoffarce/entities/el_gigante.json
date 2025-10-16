@@ -1,0 +1,10 @@
+{
+  "maxHealth": 20.0,
+  "attackDamage": 8.0,
+  "movementSpeed": 0.20,
+  "followRange": 35.0,
+  "naturalSpawn": true,
+  "spawnWeight": 8,
+  "minSpawnCount": 1,
+  "maxSpawnCount": 1
+}
