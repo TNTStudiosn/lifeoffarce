@@ -38,6 +38,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import com.TNTStudios.lifeoffarce.entity.config.EntityStatsConfig;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
 import org.slf4j.Logger;
 
 // La anotación @Mod le dice a Forge que esta clase es la principal de mi mod.
@@ -51,6 +54,7 @@ public class Lifeoffarce {
 
     // Mi ID de mod. Es fundamental para que Forge identifique mis bloques, ítems, etc.
     public static final String MODID = "lifeoffarce";
+    public static final String MOD_ID = "lifeoffarce";
     // El logger, para poder escribir mensajes en la consola de Minecraft.
     private static final Logger LOGGER = LogUtils.getLogger();
     // La instancia única de mi gestor de estadísticas. Así controlo los datos de mis mobs.
@@ -98,7 +102,6 @@ public class Lifeoffarce {
         ModItems.register(modEventBus);
         ModCreativeModeTabs.register(modEventBus);
         ModEntities.register(modEventBus);
-        ModEvents.register(modEventBus); // <-- REGISTRO DE MI NUEVA CLASE DE EVENTOS DE SPAWN
 
         // --- Registro de los Deferred Registers ---
         // Le paso mis "listas de espera" al bus de eventos para que las procese.
@@ -117,6 +120,7 @@ public class Lifeoffarce {
         MinecraftForge.EVENT_BUS.register(this);
         // Añado un listener específico para el evento de recarga de recursos (/reload).
         MinecraftForge.EVENT_BUS.addListener(this::onAddReloadListener);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EntityStatsConfig.SPEC, "lifeoffarce-entity-stats.toml");
 
         // --- Registro de la configuración ---
         // Le digo a Forge que cargue mi archivo de configuración (Config.java).
