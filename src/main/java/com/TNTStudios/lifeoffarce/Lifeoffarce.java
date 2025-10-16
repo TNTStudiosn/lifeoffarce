@@ -112,7 +112,6 @@ public class Lifeoffarce {
         // --- Suscripción a eventos del mod ---
         // Aquí conecto mis métodos a eventos específicos del ciclo de vida del mod.
         modEventBus.addListener(this::commonSetup);
-        modEventBus.addListener(this::entityAttributeEvent);
         modEventBus.addListener(this::addCreative);
 
         // --- Suscripción a eventos generales de Forge ---
@@ -160,11 +159,6 @@ public class Lifeoffarce {
                 ENTITY_STAT_MANAGER.loadStats(pResourceManager);
             }
         });
-    }
-
-    // Se ejecuta cuando se necesitan registrar los atributos de las entidades (vida, daño, etc.).
-    private void entityAttributeEvent(EntityAttributeCreationEvent event) {
-        event.put(ModEntities.EL_GIGANTE.get(), ElGiganteEntity.createAttributes().build());
     }
 
     // Se ejecuta para añadir ítems a las pestañas de creativo existentes.

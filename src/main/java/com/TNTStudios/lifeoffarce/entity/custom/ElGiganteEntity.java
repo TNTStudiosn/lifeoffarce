@@ -25,29 +25,6 @@ public class ElGiganteEntity extends Monster implements GeoEntity {
         super(pEntityType, pLevel);
     }
 
-    // Aquí está la magia. Ahora los atributos se leen desde el gestor de estadísticas.
-    public static AttributeSupplier.Builder createAttributes() {
-        // Primero, obtengo las estadísticas para este tipo de entidad.
-        Optional<EntityStats> statsOptional = Lifeoffarce.ENTITY_STAT_MANAGER.getStats(com.TNTStudios.lifeoffarce.entity.ModEntities.EL_GIGANTE.get());
-
-        // Si encuentro un JSON para la entidad, uso esos valores.
-        if (statsOptional.isPresent()) {
-            EntityStats stats = statsOptional.get();
-            return Monster.createMonsterAttributes()
-                    .add(Attributes.MAX_HEALTH, stats.getMaxHealth())
-                    .add(Attributes.ATTACK_DAMAGE, stats.getAttackDamage())
-                    .add(Attributes.MOVEMENT_SPEED, stats.getMovementSpeed())
-                    .add(Attributes.FOLLOW_RANGE, stats.getFollowRange());
-        }
-
-        // Si no, uso valores por defecto para evitar que el juego crashee.
-        return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 20.0D)
-                .add(Attributes.ATTACK_DAMAGE, 8.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.20D)
-                .add(Attributes.FOLLOW_RANGE, 35.0D);
-    }
-
     // El resto de la clase permanece igual...
     @Override
     protected void registerGoals() {
