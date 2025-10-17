@@ -12,16 +12,7 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
-        // Para cada una de mis entidades, llamo a este evento para asignarle sus atributos base.
-        // Estos son los valores que tendrán al ser creadas, antes de cualquier modificador (pociones, equipo, etc.).
-
-        // =================================================================================
-        // CORRECCIÓN FINAL
-        // =================================================================================
-        // Ahora, en lugar de intentar leer la configuración (que puede no estar lista),
-        // llamo directamente al método estático 'createAttributes()' que acabo de añadir
-        // en la clase ElGiganteEntity.
-        // Esto soluciona el crasheo de forma definitiva.
         event.put(ModEntities.EL_GIGANTE.get(), ElGiganteEntity.createAttributes().build());
+    }
     }
 }
